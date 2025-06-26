@@ -35,7 +35,7 @@ def generate_scout_message(profile_text: str, tone: str = "professional") -> str
     
 def summarize_profile(profile_text: str) -> str:
     prompt = f"""
-以下のプロフィール文から、職歴、スキル、志向性を簡潔にまとめてください：
+以下のプロフィール文から、名前、コンタクトインフォ、職歴、スキル、志向性を簡潔にまとめてください：
 
 {profile_text}
 """

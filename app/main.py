@@ -36,7 +36,6 @@ if uploaded_file:
                     summary = summarize_profile(profile)
                     message = generate_scout_message(summary, tone)
                     results.append({
-                        "original_profile": profile,
                         "summary": summary,
                         "scout_message": message
                     })
