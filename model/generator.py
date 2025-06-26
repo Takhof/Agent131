@@ -25,3 +25,17 @@ def generate_scout_message(profile_text: str, tone: str = "professional") -> str
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"エラーが発生しちゃった…：{str(e)}"
+    
+def summarize_profile(profile_text: str) -> str:
+    prompt = f"""
+以下のプロフィール文から、職歴、スキル、志向性を簡潔にまとめてください：
+
+{profile_text}
+"""
+    response = client.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.5,
+        max_tokens=300
+    )
+    return response.choices[0].message.content.strip()    
