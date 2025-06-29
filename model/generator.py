@@ -7,7 +7,6 @@ import streamlit as st
 
 
 
-load_dotenv()
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
