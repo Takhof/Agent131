@@ -4,11 +4,13 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import PyPDF2
 import pandas as pd
+import streamlit as st
 
 
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 def generate_scout_message(profile_text: str, tone: str = "professional") -> str:
     prompt = f"""
