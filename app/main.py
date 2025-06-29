@@ -12,9 +12,8 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 st.set_page_config(page_title="スカウト文ジェネレーター", page_icon="💌")
 
-st.title("💌 お仕事マッチングエージェント")
+st.title("💌 お仕事マッチエージェント")
 st.caption("候補者プロフィールからマッチング度を計算して魅力的なスカウト文を自動で作成しちゃうよ✨")
-
 st.markdown("---")
 
 # 求人要件入力欄
@@ -29,33 +28,11 @@ uploaded_file = st.file_uploader("📎 プロフィールファイルをアッ�
                                  )
 
 
-if uploaded_file:
+if uploaded_file and job_description.strip() != "":
     df_profiles = read_multiple_profiles(uploaded_file)
     if df_profiles is not None and not df_profiles.empty:
-        st.info(f"✅ {len(df_profiles)} 件のプロフィールを読み込みました。")
-
-        tone = st.selectbox("🗣️ スカウト文のトーンは？", ["friendly", "polite", "enthusiastic"], key="tone_select")
-
-        if st.button("✨ スカウト文を作る！"):
-            with st.spinner("スカウト文を一括生成中..."):
-                results = []
-                for idx, row in df_profiles.iterrows():
-                    profile = row.get("profile", "")
-                    summary = summarize_profile(profile)
-                    message = generate_scout_message(summary, tone)
-                    results.append({
-                        "summary": summary,
-                        "scout_message": message
-                    })
-                df_result = pd.DataFrame(results)
-                st.success("🎉 スカウト文ができたよ！")
-                st.dataframe(df_result[["summary", "scout_message"]])
-                st.markdown(get_csv_download_link(df_result), unsafe_allow_html=True)
-                
-
-if uploaded_file and job_description.strip() != "":
+            st.info(f"✅ {len(df_profiles)} 件のプロフィールを読み込みました。")    
     if st.button("🔍 マッチ度スコアを計算する！"):
-        df_profiles = read_multiple_profiles(uploaded_file)
         results = []
         for idx, row in df_profiles.iterrows():
             profile = row.get("profile", "")
@@ -76,3 +53,24 @@ if uploaded_file and job_description.strip() != "":
         st.success("✨ マッチング完了！")
         st.dataframe(df_score)
         st.markdown(get_csv_download_link(df_score), unsafe_allow_html=True)
+
+
+if uploaded_file:
+    tone = st.selectbox("🗣️ スカウト文のトーンは？", ["friendly", "polite", "enthusiastic"], key="tone_select")
+
+    if st.button("✨ スカウト文を作る！"):
+        with st.spinner("スカウト文を一括生成中..."):
+            results = []
+            for idx, row in df_profiles.iterrows():
+                profile = row.get("profile", "")
+                summary = summarize_profile(profile)
+                message = generate_scout_message(summary, tone)
+                results.append({
+                    "summary": summary,
+                    "scout_message": message
+                })
+            df_result = pd.DataFrame(results)
+            st.success("🎉 スカウト文ができたよ！")
+            st.dataframe(df_result[["summary", "scout_message"]])
+            st.markdown(get_csv_download_link(df_result), unsafe_allow_html=True)
+            
