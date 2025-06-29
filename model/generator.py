@@ -1,7 +1,6 @@
 import base64
 import os
 from openai import OpenAI
-from dotenv import load_dotenv
 import PyPDF2
 import pandas as pd
 import streamlit as st
