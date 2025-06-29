@@ -3,10 +3,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pandas as pd
 import streamlit as st
+import openai
 from model.generator import generate_scout_message
 from model.generator import summarize_profile, extract_text_from_pdf, read_uploaded_profiles, get_csv_download_link, read_multiple_profiles
 from model.matcher import compute_match_score
 
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 st.set_page_config(page_title="スカウト文ジェネレーター", page_icon="💌")
 
